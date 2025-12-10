@@ -21,12 +21,17 @@ def validate_api_key():
 
 def fetch_articles(keyword=None, start_date=None, end_date=None):
     params = {
-        "apiKey": API_KEY,
-        "sources": "bbc-news",
-        "q": keyword,
-        "from": start_date,
-        "to": end_date,
+        "apiKey": API_KEY
     }
+
+    if keyword:
+        params["q"] = keyword
+    else:
+        params["sources"] = "bbc-news"
+    if start_date:
+        params["from"] = start_date
+    if end_date:
+        params["to"] = end_date
 
     try:
         response = requests.get(BASE_URL, params=params, timeout=10)
@@ -69,17 +74,17 @@ def parse_arguments():
     parser = argparse.ArgumentParser(
         description="News summarizer with keyword and date filtering."
     )
-    #provide this format "--k football"
+    #provide this format "-k football"
     parser.add_argument(
         "--keyword",
         "-k",
     )
-    #provide this format "--f YYYY-MM-DD"
+    #provide this format "-f YYYY-MM-DD"
     parser.add_argument(
         "--from-date",
         "-f",
     )
-    #provide this format "--t YYYY-MM-DD"
+    #provide this format "-t YYYY-MM-DD"
     parser.add_argument(
         "--to-date",
         "-t",
